@@ -11,3 +11,4 @@
 TODO Implement getOrderHash
 
 - Learn how the function works on seaport-js
+- Learn about structs in Rust since this function takes a struct as it's parameter
