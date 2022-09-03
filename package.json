@@ -1,0 +1,24 @@
+{
+  "name": "seaport-rs",
+  "version": "1.0.0",
+  "description": "I'm new to Rust and seek to be legendary at it, this project will be the first step.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Perelyn-sama/seaport-rs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Perelyn-sama/seaport-rs/issues"
+  },
+  "homepage": "https://github.com/Perelyn-sama/seaport-rs#readme",
+  "dependencies": {
+    "ethers": "^5.7.0"
+  }
+}
