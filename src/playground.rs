@@ -1,5 +1,5 @@
-use crate::constant::OrderType;
-use crate::constant::ItemType;
+use crate::constants::OrderType;
+use crate::constants::ItemType;
 
 pub fn run(){
     struct Person {
@@ -22,7 +22,7 @@ pub fn run(){
         start_amount: String,
         end_amount: String,
         recipient: String,
-    };
+    }
 
 
 
