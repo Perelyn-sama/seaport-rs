@@ -12,3 +12,10 @@ TODO Implement getOrderHash
 
 - Learn how the function works on seaport-js
 - Learn about structs in Rust since this function takes a struct as it's parameter
+
+
+OVERALL PROGESS  
+- Find the toUtf8 for ethers-rs [x]
+- Dont forget to add the comments from seaport-js [ ]
+- Seems something is wrong with jetbrains's markdown preview(pr time?)
+- We could also add give examples of the struct elements in elements, maybe? 

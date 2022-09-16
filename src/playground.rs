@@ -1,78 +1,18 @@
-use crate::constants::OrderType;
-use crate::constants::ItemType;
+use ethers::core::utils::keccak256;
+use ethers::types::H256;
 
-pub fn run(){
-    struct Person {
-        name:  String,
-        age: u8,
-    }
+pub fn run() {
+    // Charset::from_str('s');
+    println!("{:?}", H256::from(keccak256("Perelyn".as_bytes())));
+    // println!("{:?}", "Perelyn".as_bytes());
 
-    struct OfferItem {
-        item_type: ItemType,
-        token: String,
-        identifier_or_criteria: String,
-        start_amount: String,
-        end_amount: String,
-    }
-
-    struct ConsiderationItem {
-        item_type: ItemType,
-        token: String,
-        identifier_or_criteria: String,
-        start_amount: String,
-        end_amount: String,
-        recipient: String,
-    }
-
-
-
-    struct OrderParameters {
-        offerer: String,
-        zone: String,
-        order_type: OrderType,
-        start_time: u64,
-        end_time: u64,
-        zone_hash: String,
-        salt: String,
-        // Using a vec here but would an array be better?
-        // const xs: [OfferItem; 1];
-        offer: Vec<OfferItem>,
-        consideration: Vec<ConsiderationItem>,
-        total_original_consideration_items: u64,
-        conduit_key: String
-    }
-
-
-    fn identify(person: Person) -> ( String, u8) {
-        (person.name, person.age)
-    }
-
-    let name = String::from("Perelyn");
-    let age = 20;
-    let perelyn : Person = Person { name :name , age: age};
-
-    println!("{:?}",identify(perelyn));
+    println!(
+        "{:?}",
+        "0xeadb26545b61ffc09fc97b674bad79e3af067ac581b7f124a622bb976b128759"
+            == "0xeadb26545b61ffc09fc97b674bad79e3af067ac581b7f124a622bb976b128759"
+    )
 }
-
-
-// fn main () {
-//     let vectorOfStructs: Vec<YourStruct>; 
-// }
-
-// struct YourStruct {
-//     // stuff
-// }
-
-// export type OrderParameters = {
-//     offerer: string;
-//     zone: string;
-//     orderType: OrderType;
-//     startTime: BigNumberish;
-//     endTime: BigNumberish;
-//     zoneHash: string;
-//     salt: string;
-//     offer: OfferItem[];
-//     consideration: ConsiderationItem[];
-//     totalOriginalConsiderationItems: BigNumberish;
-//     conduitKey: string;
-//   };
+// 0xeadb26545b61ffc09fc97b674bad79e3af067ac581b7f124a622bb976b128759 Perelyn js
+// toUtf8 js Perelyn Uint8Array(7) [ 80, 101, 114, 101, 108, 121, 110 ]
+// as_bytes rs Perelyn [80, 101, 114, 101, 108, 121, 110]
+// 0xeadb26545b61ffc09fc97b674bad79e3af067ac581b7f124a622bb976b128759 Perelyn rs

@@ -1,12 +1,13 @@
 pub const SEAPORT_CONTRACT_NAME: &str = "seaport";
 pub const SEAPORT_CONTRACT_VERSION: f64 = 1.1;
-pub const OPENSEA_CONDUIT_KEY: &str = "0x0000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000";
+pub const OPENSEA_CONDUIT_KEY: &str =
+    "0x0000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000";
 
 pub enum OrderType {
-    FullOpen = 0, // No partial fills, anyone can execute
-    PartialOpen = 1, // Partial fills supported, anyone can execute
-    FullRestricted = 2, // No partial fills, only offerer or zone can execute
-    PartialRestricted = 3, // Partial fills supported, only offerer or zone can execute  
+    FullOpen = 0,          // No partial fills, anyone can execute
+    PartialOpen = 1,       // Partial fills supported, anyone can execute
+    FullRestricted = 2,    // No partial fills, only offerer or zone can execute
+    PartialRestricted = 3, // Partial fills supported, only offerer or zone can execute
 }
 
 pub enum ItemType {
@@ -34,7 +35,6 @@ pub enum BasicOrderRouteType {
 
 pub const ONE_HUNDRED_PERCENT_BP: u64 = 10000;
 pub const NO_CONDUIT: &str = "0x0000000000000000000000000000000000000000000000000000000000000000";
-
 
 // use ethers::types::Address;
 // use once_cell::sync::Lazy;

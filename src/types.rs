@@ -4,27 +4,23 @@ use ethers::{
     types::{Address, Bytes, H256, U256},
 };
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
-#[derive(Clone, Debug)]
-pub enum Network{
-    Mainnet,
-    Rinkeby,
+struct Overrides {
+    contractAddress: Address,
+    defaultConduitkey: H256,
 }
 
-impl Network {
-    pub fn url(&self) -> &str {
-        match self {
-            Network::Mainnet => constants::API_BASE_MAINNET,
-            Network::Rinkeby => constants::API_BASE_RINKEBY,
-        }
-    }
-
-    // iS THERE A NEED TO ADD `ORDERBOOK` AND `API` METHODS? 
+struct SeaportConfig {
+    ascendingAmountFulfillmentBuffer: Option<u64>,
+    balanceAndApprovalChecksOnOrderCreation: Option<bool>,
+    conduitKeyToConduit: Option<HashMap<Address, Address>>,
+    overides: Option<Overrides>,
 }
 
 struct OfferItem {
     item_type: ItemType,
-    token: String,
+    token: Address,
     identifier_or_criteria: String,
     start_amount: String,
     end_amount: String,
@@ -39,10 +35,13 @@ struct ConsiderationItem {
     recipient: String,
 }
 
-union Item {OfferItem: OfferItem,ConsiderationItem: ConsiderationItem }
+union Item {
+    OfferItem: OfferItem,
+    ConsiderationItem: ConsiderationItem,
+}
 
 struct OrderParameters {
-    offerer: String,
+    offerer: Address,
     zone: String,
     order_type: OrderType,
     start_time: u64,
@@ -54,21 +53,16 @@ struct OrderParameters {
     offer: Vec<OfferItem>,
     consideration: Vec<ConsiderationItem>,
     total_original_consideration_items: u64,
-    conduit_key: String
+    conduit_key: H256,
 }
 
 struct OrderComponents {
     OrderParameters: OrderParameters,
-    counter: u64
+    counter: u64,
 }
 
 struct Order {
     parameters: OrderParameters,
-    // This should be turned to a H256 or somethig 
-    signature: Sring
+    // This should be turned to a H256 or somethig
+    signature: H256,
 }
-
-// union MyUnion {
-//     f1: u32,
-//     f2: f32,
-// }
