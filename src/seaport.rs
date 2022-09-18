@@ -12,31 +12,35 @@ use crate::types::Overrides;
 
 // for types, add when you're done
 // use crate::types::{}
-#[derive(Clone, Debug)]
-struct Seaport {
+// #[derive(Clone, Debug)]
+struct Seaport<T> {
     // Making this a generic type because I dont know to set as its type
-    providerOrSigner: <T>,
+    providerOrSigner: T,
     seaportConfig: Option<SeaportConfig>,
 }
 
 //use spez, gn I'm tired
-impl Seaport {
-    pub fn new(providerOrSigner: <T>, cfg: SeaportConfig) -> Self {
-        match cfg {
-            Some(SeaportConfig) => println!("You passed in something"),
-            None => println!("You passed in Nada!"),
+impl<T> Seaport<T> {
+    pub fn new(providerOrSigner: T, cfg: SeaportConfig) -> Self {
+        match cfg.ascendingAmountFulfillmentBuffer {
+            Some(_x) => Self {
+                providerOrSigner,
+                seaportConfig: Some(cfg),
+            },
+            None => Self {
+                providerOrSigner,
+                seaportConfig: Some(SeaportConfig::default()),
+            },
         }
-
-        Self { providerOrSigner }
     }
 }
 
 impl Default for SeaportConfig {
     fn default() -> Self {
         Self {
-            ascendingAmountFulfillmentBuffer: 300,
-            balanceAndApprovalChecksOnOrderCreation: true,
-            conduitKeyToConduit: KNOWN_CONDUIT_KEYS_TO_CONDUIT,
+            ascendingAmountFulfillmentBuffer: Some(300),
+            balanceAndApprovalChecksOnOrderCreation: Some(true),
+            conduitKeyToConduit: Some(KNOWN_CONDUIT_KEYS_TO_CONDUIT),
             overides: Some(Overrides {
                 contractAddress: OPENSEA_CONDUIT_ADDRESS,
                 defaultConduitkey: OPENSEA_CONDUIT_KEY,

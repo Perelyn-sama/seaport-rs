@@ -2,11 +2,11 @@ use std::collections::HashMap;
 // use ethers::types::(Address, H256);
 use ethers::types::{Address, H256};
 use once_cell::sync::Lazy;
+use std::str::FromStr;
 
 pub const SEAPORT_CONTRACT_NAME: &str = "seaport";
 pub const SEAPORT_CONTRACT_VERSION: f64 = 1.1;
-pub const OPENSEA_CONDUIT_KEY: H256 =
-    "0x0000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000";
+pub const OPENSEA_CONDUIT_KEY: H256 = H256::from_str("0x0000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000").unwrap();
 
 pub enum OrderType {
     FullOpen = 0,
@@ -44,7 +44,7 @@ pub enum BasicOrderRouteType {
 pub const ONE_HUNDRED_PERCENT_BP: u64 = 10000;
 pub const NO_CONDUIT: &str = "0x0000000000000000000000000000000000000000000000000000000000000000";
 
-pub const KNOWN_CONDUIT_KEYS_TO_CONDUIT: HashMap<H256,Address> =
+pub const KNOWN_CONDUIT_KEYS_TO_CONDUIT: HashMap<H256,Lazy<Address>> =
     HashMap::from([(OPENSEA_CONDUIT_KEY, OPENSEA_CONDUIT_ADDRESS)]);
 
 pub static OPENSEA_CONDUIT_ADDRESS: Lazy<Address> = Lazy::new(|| {
