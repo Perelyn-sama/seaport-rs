@@ -1,24 +1,26 @@
-use crate::{constants, contracts};
+// use crate::{constants, contracts};
+use crate::constants::ItemType;
+use crate::constants::OrderType;
+
 use ethers::{
-    core::utils::id,
-    types::{Address, Bytes, H256, U256},
+    types::{Address, H256},
 };
-use serde::{Deserialize, Serialize};
+// use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-struct Overrides {
+pub struct Overrides {
     contractAddress: Address,
     defaultConduitkey: H256,
 }
 
-struct SeaportConfig {
+pub struct SeaportConfig {
     ascendingAmountFulfillmentBuffer: Option<u64>,
     balanceAndApprovalChecksOnOrderCreation: Option<bool>,
     conduitKeyToConduit: Option<HashMap<Address, Address>>,
     overides: Option<Overrides>,
 }
 
-struct OfferItem {
+pub struct OfferItem {
     item_type: ItemType,
     token: Address,
     identifier_or_criteria: String,
@@ -26,7 +28,7 @@ struct OfferItem {
     end_amount: String,
 }
 
-struct ConsiderationItem {
+pub struct ConsiderationItem {
     item_type: ItemType,
     token: String,
     identifier_or_criteria: String,
@@ -35,12 +37,12 @@ struct ConsiderationItem {
     recipient: String,
 }
 
-union Item {
+pub union Item {
     OfferItem: OfferItem,
     ConsiderationItem: ConsiderationItem,
 }
 
-struct OrderParameters {
+pub struct OrderParameters {
     offerer: Address,
     zone: String,
     order_type: OrderType,
@@ -56,12 +58,12 @@ struct OrderParameters {
     conduit_key: H256,
 }
 
-struct OrderComponents {
+pub struct OrderComponents {
     OrderParameters: OrderParameters,
     counter: u64,
 }
 
-struct Order {
+pub struct Order {
     parameters: OrderParameters,
     // This should be turned to a H256 or somethig
     signature: H256,
