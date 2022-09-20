@@ -30,3 +30,17 @@
 //     println!("ETH/USDT price: {:.2}", mid_price);
 //     Ok(())
 // }
+
+// Like playground.rs for dropping examples and trying things
+struct Provider;
+
+struct Signer;
+
+enum ProviderOrSigner {
+    Provider(provider),
+    Signer(Signer),
+}
+
+struct seaport {
+    providerOrSigner: ProviderOrSigner,
+}

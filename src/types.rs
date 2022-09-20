@@ -1,13 +1,21 @@
-// use crate::{constants, contracts};
 use crate::constants::ItemType;
 use crate::constants::OrderType;
-
+use ethers_providers::Provider;
 use ethers::{
     types::{Address, H256},
 };
-// use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use ethers::prelude::Lazy;
+
+// This file contains the types(Structures of data types)
+// Why did I use Lazy<Address> over Address? I have no technical reason
+// I saw this pattern in gakonst's opensea-rs
+// Made everything here pub so I could use them in other files
+
+// TODO  I have to make sure each type is ideal at some point
+// I used u64 for every field that was a number, I'm not sure if this was a good idea
+// FIXME start_amount and end_amount are Strings, I'll have to work on that later
+// FIXME recipient should probably be an Address or Lazy<Address>
 
 pub struct Overrides {
     pub contractAddress: Lazy<Address>,
@@ -66,6 +74,11 @@ pub struct OrderComponents {
 
 pub struct Order {
     pub parameters: OrderParameters,
-    // This should be turned to a H256 or somethig
     pub signature: H256,
+}
+
+// I needed a way to set provider or signer to just two types, thus the enum
+pub enum ProviderOrSigner {
+    Provider(Provider<P>),
+    Signer(String),
 }

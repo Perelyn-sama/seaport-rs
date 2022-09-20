@@ -1,6 +1,7 @@
 use ethers::core::utils::keccak256;
 use ethers::types::H256;
 
+// I come here to mess around with things
 pub fn run() {
     // Charset::from_str('s');
     println!("{:?}", H256::from(keccak256("Perelyn".as_bytes())));
