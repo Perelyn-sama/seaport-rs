@@ -1,11 +1,9 @@
-use crate::constants::ItemType;
-use crate::constants::OrderType;
+use ethers::types::{Address, H160, H256};
 use ethers_providers::Provider;
-use ethers::{
-    types::{Address, H256},
-};
+use crate::constants::OrderType;
+use crate::constants::ItemType;
 use std::collections::HashMap;
-use ethers::prelude::Lazy;
+use std::str::FromStr;
 
 // This file contains the types(Structures of data types)
 // Why did I use Lazy<Address> over Address? I have no technical reason
@@ -18,15 +16,24 @@ use ethers::prelude::Lazy;
 // FIXME recipient should probably be an Address or Lazy<Address>
 
 pub struct Overrides {
-    pub contractAddress: Lazy<Address>,
+    pub contractAddress: H160,
     pub defaultConduitkey: H256,
 }
 
 pub struct SeaportConfig {
     pub ascendingAmountFulfillmentBuffer: Option<u64>,
     pub balanceAndApprovalChecksOnOrderCreation: Option<bool>,
-    pub conduitKeyToConduit: Option<HashMap<H256, Lazy<Address>>>,
+    pub conduitKeyToConduit: Option<HashMap<H256, H160>>,
     pub overides: Option<Overrides>,
+}
+
+impl SeaportConfig {
+    // I faced issues setting the conduit key to a constanst, so I'm using a function for it instead - Got the idea from asnared :)
+    // I might move this to SeaportConfig
+    pub fn get_opensea_conduit_key() -> H256 {
+        H256::from_str("0x0000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000")
+            .unwrap()
+    }
 }
 
 pub struct OfferItem {
@@ -78,7 +85,7 @@ pub struct Order {
 }
 
 // I needed a way to set provider or signer to just two types, thus the enum
-pub enum ProviderOrSigner {
+pub enum ProviderOrSigner<P> {
     Provider(Provider<P>),
     Signer(String),
 }
