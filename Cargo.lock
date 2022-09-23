@@ -2538,7 +2538,7 @@ dependencies = [
  "ethers-solc",
  "once_cell",
  "serde",
- "spez",
+ "tokio",
 ]
 
 [[package]]
@@ -2752,28 +2752,6 @@ dependencies = [
  "lalrpop-util",
  "phf",
  "unicode-xid",
-]
-
-[[package]]
-name = "spez"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "304d2fd6a79879f77b207ba8cd5079c22f872eaad65a3fb8d71799e5bacf368b"
-dependencies = [
- "proc-macro-hack",
- "spez-macros",
-]
-
-[[package]]
-name = "spez-macros"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c7fa06037d8ccb6cdadc151129062ebc9e4281c1ea44b2c704582245d017d1dc"
-dependencies = [
- "proc-macro-hack",
- "proc-macro2",
- "quote",
- "syn",
 ]
 
 [[package]]
