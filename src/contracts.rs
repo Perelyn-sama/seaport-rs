@@ -16,7 +16,6 @@
 //     event_derives(serde::Deserialize, serde::Serialize)
 // );
 
-
 // Implementation I found off Quay-rs
 // #[doc = "Seaport was auto-generated with ethers-rs Abigen. More information at: https://github.com/gakonst/ethers-rs"]
 // pub static SEAPORT_ABI: ethers::contract::Lazy<ethers::core::abi::Abi> =
