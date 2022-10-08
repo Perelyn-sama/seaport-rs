@@ -1,7 +1,9 @@
-use ethers::types::{Address, H160, H256};
-use ethers_providers::Provider;
-use crate::constants::OrderType;
 use crate::constants::ItemType;
+use crate::constants::OrderType;
+// use ethers::prelude::LocalWallet;
+// use ethers::types::{Address, H160, H256};
+// use ethers_providers::{Http, Provider};
+use ethers::prelude::*;
 use std::collections::HashMap;
 use std::str::FromStr;
 
@@ -15,15 +17,17 @@ use std::str::FromStr;
 // FIXME start_amount and end_amount are Strings, I'll have to work on that later
 // FIXME recipient should probably be an Address or Lazy<Address>
 
+#[derive(Debug, PartialEq)]
 pub struct Overrides {
-    pub contractAddress: H160,
-    pub defaultConduitkey: H256,
+    pub contract_address: H160,
+    pub default_conduitkey: H256,
 }
 
+#[derive(Debug, PartialEq)]
 pub struct SeaportConfig {
-    pub ascendingAmountFulfillmentBuffer: Option<u64>,
-    pub balanceAndApprovalChecksOnOrderCreation: Option<bool>,
-    pub conduitKeyToConduit: Option<HashMap<H256, H160>>,
+    pub ascending_amount_fulfillment_buffer: Option<u64>,
+    pub balance_and_approval_checks_on_order_creation: Option<bool>,
+    pub conduit_key_to_conduit: Option<HashMap<H256, H160>>,
     pub overides: Option<Overrides>,
 }
 
@@ -54,8 +58,8 @@ pub struct ConsiderationItem {
 }
 
 pub struct Item {
-    pub OfferItem: OfferItem,
-    pub ConsiderationItem: ConsiderationItem,
+    pub offer_item: OfferItem,
+    pub consideration_item: ConsiderationItem,
 }
 
 pub struct OrderParameters {
@@ -75,7 +79,7 @@ pub struct OrderParameters {
 }
 
 pub struct OrderComponents {
-    pub OrderParameters: OrderParameters,
+    pub order_parameters: OrderParameters,
     pub counter: u64,
 }
 
@@ -85,7 +89,8 @@ pub struct Order {
 }
 
 // I needed a way to set provider or signer to just two types, thus the enum
-pub enum ProviderOrSigner<P> {
-    Provider(Provider<P>),
-    Signer(String),
+#[derive(Debug)]
+pub enum ProviderOrSigner {
+    Provider(Provider<Http>),
+    Signer(LocalWallet),
 }
