@@ -12,6 +12,7 @@ pub fn run() {
     //     "0xeadb26545b61ffc09fc97b674bad79e3af067ac581b7f124a622bb976b128759"
     //         == "0xeadb26545b61ffc09fc97b674bad79e3af067ac581b7f124a622bb976b128759"
     // )
+    println!("{:?}", "Hey o");
 }
 // 0xeadb26545b61ffc09fc97b674bad79e3af067ac581b7f124a622bb976b128759 Perelyn js
 // toUtf8 js Perelyn Uint8Array(7) [ 80, 101, 114, 101, 108, 121, 110 ]
