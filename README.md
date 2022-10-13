@@ -1,4 +1,6 @@
-# Seaport-rs
+# Seaport-rs 
+
+# WIP - WORK IN PROGRESS. REFER TO https://github.com/Alcibiades-Capital/quay FOR PRODUCTION READY CODE
 
 I'm new to Rust and seek to be legendary at it, this project will be the first step.
 
