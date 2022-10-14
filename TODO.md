@@ -19,3 +19,6 @@ OVERALL PROGESS
 - Dont forget to add the comments from seaport-js [ ]
 - Seems something is wrong with jetbrains's markdown preview(pr time?)
 - We could also add give examples of the struct elements in elements, maybe? 
+
+UNIT TEST IDEAS 
+- Write test for Seaport new function, when cfg is provided and when it's not
