@@ -11,12 +11,7 @@ pub struct Seaport {
 }
 
 impl Seaport {
-    // Options are used alot in this function because I wanted to create a situation where the function could be calle without a cfg being provided.
-
     pub fn new(provider_or_signer: ProviderOrSigner, cfg: SeaportConfig) -> Self {
-        // The idea here is to be able to tell if a config was passed
-        // This line was made with the assumption that If cfg.ascending_amount_fulfillment_buffer is present then a config was provided
-        // cfg.ascending_amount_fulfillment_buffer is not special to this theory, any other field could have been used
         match cfg.ascending_amount_fulfillment_buffer {
             Some(_x) => {
                 return Self {
@@ -25,8 +20,6 @@ impl Seaport {
                 };
             }
 
-            // This is a case when a cfg is not provided
-            // I use SeaportConfig::default()-line 51 has a way to provide a default a base config
             None => {
                 return Self {
                     provider_or_signer,
@@ -37,8 +30,6 @@ impl Seaport {
     }
 }
 
-// I made this because I need to create a default config
-// I found a pattern like in Opensea-rs and thought "Yeah, I could use that"
 impl Default for SeaportConfig {
     fn default() -> Self {
         let mut map = HashMap::new();
@@ -48,7 +39,6 @@ impl Default for SeaportConfig {
         );
 
         Self {
-            // Most to the value have Some covering it because I made them Options
             ascending_amount_fulfillment_buffer: Some(300),
             balance_and_approval_checks_on_order_creation: Some(true),
             conduit_key_to_conduit: Some(map),
@@ -67,16 +57,12 @@ mod tests {
     use ethers::prelude::*;
 
     #[tokio::test]
-    async fn test_default() {
+    async fn test_seaportConfig_default() {
         let mut map = HashMap::new();
         map.insert(
             SeaportConfig::get_opensea_conduit_key(),
             *constants::OPENSEA_CONDUIT_ADDRESS,
         );
-
-        // let provider = Provider::<Http>::try_from("https://rinkeby.infura.io/v3/856ed0b5c16548ba845075347a2e431f")?;
-        // let seaport = Seaport::new(ProviderOrSigner::Provider(provider), cfg);
-        // println!("{:?}", cfg);
 
         let cfg = SeaportConfig::default();
         let output = SeaportConfig::from(cfg);
@@ -95,7 +81,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn test_seaport() {
+    async fn test_seaport_new() {
         let mut map = HashMap::new();
         map.insert(
             SeaportConfig::get_opensea_conduit_key(),
