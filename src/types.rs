@@ -1,11 +1,13 @@
-use crate::constants::ItemType;
-use crate::constants::OrderType;
+use std::collections::HashMap;
+use std::str::FromStr;
+
 // use ethers::prelude::LocalWallet;
 // use ethers::types::{Address, H160, H256};
 // use ethers_providers::{Http, Provider};
 use ethers::prelude::*;
-use std::collections::HashMap;
-use std::str::FromStr;
+
+use crate::constants::ItemType;
+use crate::constants::OrderType;
 
 // This file contains the types(Structures of data types)
 // Why did I use Lazy<Address> over Address? I have no technical reason
@@ -40,6 +42,7 @@ impl SeaportConfig {
     }
 }
 
+#[derive(Debug)]
 pub struct OfferItem {
     pub item_type: ItemType,
     pub token: Address,
@@ -48,6 +51,7 @@ pub struct OfferItem {
     pub end_amount: String,
 }
 
+#[derive(Debug)]
 pub struct ConsiderationItem {
     pub item_type: ItemType,
     pub token: String,
@@ -57,11 +61,13 @@ pub struct ConsiderationItem {
     pub recipient: String,
 }
 
+// FIXME TS UNION TYPES ARE MORE LIKE ENUMS THAN STRUCTS
 pub struct Item {
     pub offer_item: OfferItem,
     pub consideration_item: ConsiderationItem,
 }
 
+#[derive(Debug)]
 pub struct OrderParameters {
     pub offerer: Address,
     pub zone: String,
@@ -78,11 +84,13 @@ pub struct OrderParameters {
     pub conduit_key: H256,
 }
 
+#[derive(Debug)]
 pub struct OrderComponents {
     pub order_parameters: OrderParameters,
     pub counter: u64,
 }
 
+#[derive(Debug)]
 pub struct Order {
     pub parameters: OrderParameters,
     pub signature: H256,
@@ -93,4 +101,99 @@ pub struct Order {
 pub enum ProviderOrSigner {
     Provider(Provider<Http>),
     Signer(LocalWallet),
+}
+
+#[derive(Debug)]
+pub struct BasicErc721Item {
+    item_type: ItemType,
+    // FIXME This should be an address
+    token: String,
+    identifier: String,
+}
+
+#[derive(Debug)]
+pub struct Erc721ItemWithCriteria {
+    item_type: ItemType,
+    // FIXME This should be an address
+    token: String,
+    identifiers: Vec<String>,
+    // FIXME This should be a number
+    amount: Option<String>,
+    // FIXME THIS SHOULD BE A NUMBER
+    end_amount: Option<String>,
+}
+
+#[derive(Debug)]
+pub enum Erc721Item {
+    BasicErc721Item(BasicErc721Item),
+    Erc721ItemWithCriteria(Erc721ItemWithCriteria),
+}
+
+#[derive(Debug)]
+pub struct BasicErc1155Item {
+    item_type: ItemType,
+    // FIXME SHOULD BE ADDRESS
+    token: String,
+    identifier: String,
+    amount: String,
+    end_amount: Option<String>,
+}
+
+#[derive(Debug)]
+pub struct Erc1155ItemWithCriteria {
+    item_type: ItemType,
+    token: String,
+    identifiers: Vec<String>,
+    amount: String,
+    endAmount: Option<String>,
+}
+
+#[derive(Debug)]
+pub enum Erc1155Item {
+    BasicErc1155Item(BasicErc1155Item),
+    Erc1155ItemWithCriteria(Erc1155ItemWithCriteria),
+}
+
+#[derive(Debug)]
+pub struct CurrenctyItem {
+    token: Option<String>,
+    amount: String,
+    end_amount: Option<String>,
+}
+
+#[derive(Debug)]
+pub enum CreateInputItem {
+    Erc721Item(Erc721Item),
+    Erc1155Item(Erc1155Item),
+    CurrenctyItem(CurrenctyItem),
+}
+
+#[derive(Debug)]
+pub struct ConsiderationInputItem {
+    CreateInputItem: CreateInputItem,
+    recipient: Option<String>,
+}
+
+#[derive(Debug)]
+pub struct Fee {
+    recipient: String,
+    basis_points: u32,
+}
+
+#[derive(Debug)]
+pub struct CreateOrderInput {
+    pub conduit_key: Option<String>,
+    pub zone: Option<String>,
+    pub start_time: Option<String>,
+    pub end_time: Option<String>,
+    pub offer: Vec<CreateInputItem>,
+    pub consideration: Vec<ConsiderationInputItem>,
+    pub counter: Option<u32>,
+    pub fees: Vec<Fee>,
+    pub allow_partial_fills: Option<bool>,
+    pub restricted_by_zone: Option<bool>,
+    pub use_proxy: Option<bool>,
+    pub domain: Option<String>,
+    // Will probably be a bytes type
+    pub salt: Option<String>,
 }
