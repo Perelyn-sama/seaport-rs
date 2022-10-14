@@ -4,6 +4,7 @@ use once_cell::sync::Lazy;
 pub const SEAPORT_CONTRACT_NAME: &str = "seaport";
 pub const SEAPORT_CONTRACT_VERSION: f64 = 1.1;
 
+#[derive(Debug)]
 pub enum OrderType {
     FullOpen = 0,
     // No partial fills, anyone can execute
@@ -14,6 +15,7 @@ pub enum OrderType {
     PartialRestricted = 3, // Partial fills supported, only offerer or zone can execute
 }
 
+#[derive(Debug)]
 pub enum ItemType {
     NATIVE = 0,
     ERC20 = 1,
