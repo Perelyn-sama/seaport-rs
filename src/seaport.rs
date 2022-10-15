@@ -1,8 +1,17 @@
 use crate::constants;
-use crate::types::Overrides;
+use crate::types::{ConsiderationInputItem, Overrides};
 use crate::types::ProviderOrSigner;
 use crate::types::SeaportConfig;
+use crate::types::CreateOrderInput;
 use std::collections::HashMap;
+use crate::constants::ItemType;
+use crate::types::BasicErc721Item;
+use crate::types::Erc721Item;
+use crate::types::CreateInputItem;
+use crate::types::CurrencyItem;
+use std::time::{SystemTime, UNIX_EPOCH};
+use ethers::types::U256;
+
 
 #[derive(Debug)]
 pub struct Seaport {
@@ -50,6 +59,58 @@ impl Default for SeaportConfig {
     }
 }
 
+impl Default for CreateOrderInput {
+    fn default() -> Self {
+
+        let offerer = String::from("0x3C58dC9864e73aE2Ec9E0B11e00F786352A80F51");
+
+        let basic_erc721_item = BasicErc721Item{
+            item_type: ItemType::ERC721,
+            token: String::from("0xf5de760f2e916647fd766B4AD9E85ff943cE3A2b"),
+            identifier: String::from("1672186")
+        };
+
+        let erc721_item = Erc721Item::BasicErc721Item(basic_erc721_item);
+
+        let offer_input_item = CreateInputItem::Erc721Item(erc721_item);
+
+        let currency_item = CurrencyItem{
+            token: None,
+            amount: String::from(0.0001),
+            end_amount: None
+        };
+
+        let currency_input_item = CreateInputItem::CurrencyItem(currency_item);
+
+        let consideration_input_item = ConsiderationInputItem{
+            CreateInputItem: currency_input_item,
+            recipient: Some(offerer)
+        };
+
+        let start = SystemTime::now();
+        let since_the_epoch = start
+            .duration_since(UNIX_EPOCH)
+            .expect("Time went backwards");
+        println!("{:?}", since_the_epoch);
+
+        Self {
+            conduit_key: Some(*constants::OPENSEA_CONDUIT_ADDRESS),
+            zone: Some(*constants::ZERO_ADDRESS),
+            start_time: Some(U256::from(since_the_epoch)),
+            end_time: Some(U256::max_value()),
+            offer: vec![offer_input_item],
+            consideration: vec![consideration_input_item],
+            counter: None,
+            fees: None,
+            allow_partial_fills: None,
+            restricted_by_zone: None,
+            use_proxy: None,
+            domain: None,
+            salt: None
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -57,7 +118,7 @@ mod tests {
     use ethers::prelude::*;
 
     #[tokio::test]
-    async fn test_seaportConfig_default() {
+    async fn test_seaport_config_default() {
         let mut map = HashMap::new();
         map.insert(
             SeaportConfig::get_opensea_conduit_key(),
