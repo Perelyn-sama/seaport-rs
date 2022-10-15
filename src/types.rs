@@ -105,10 +105,10 @@ pub enum ProviderOrSigner {
 
 #[derive(Debug)]
 pub struct BasicErc721Item {
-    item_type: ItemType,
+    pub item_type: ItemType,
     // FIXME This should be an address
-    token: String,
-    identifier: String,
+    pub token: String,
+    pub identifier: String,
 }
 
 #[derive(Debug)]
@@ -145,7 +145,7 @@ pub struct Erc1155ItemWithCriteria {
     token: String,
     identifiers: Vec<String>,
     amount: String,
-    endAmount: Option<String>,
+    end_amount: Option<String>,
 }
 
 #[derive(Debug)]
@@ -155,23 +155,23 @@ pub enum Erc1155Item {
 }
 
 #[derive(Debug)]
-pub struct CurrenctyItem {
-    token: Option<String>,
-    amount: String,
-    end_amount: Option<String>,
+pub struct CurrencyItem {
+    pub token: Option<String>,
+    pub amount: String,
+    pub end_amount: Option<String>,
 }
 
 #[derive(Debug)]
 pub enum CreateInputItem {
     Erc721Item(Erc721Item),
     Erc1155Item(Erc1155Item),
-    CurrenctyItem(CurrenctyItem),
+    CurrencyItem(CurrencyItem),
 }
 
 #[derive(Debug)]
 pub struct ConsiderationInputItem {
-    CreateInputItem: CreateInputItem,
-    recipient: Option<String>,
+    pub create_input_item: CreateInputItem,
+    pub recipient: Option<String>,
 }
 
 #[derive(Debug)]
@@ -182,14 +182,14 @@ pub struct Fee {
 
 #[derive(Debug)]
 pub struct CreateOrderInput {
-    pub conduit_key: Option<String>,
-    pub zone: Option<String>,
-    pub start_time: Option<String>,
-    pub end_time: Option<String>,
+    pub conduit_key: Option<Address>,
+    pub zone: Option<Address>,
+    pub start_time: Option<U256>,
+    pub end_time: Option<U256>,
     pub offer: Vec<CreateInputItem>,
     pub consideration: Vec<ConsiderationInputItem>,
     pub counter: Option<u32>,
-    pub fees: Vec<Fee>,
+    pub fees: Option<Vec<Fee>>,
     pub allow_partial_fills: Option<bool>,
     pub restricted_by_zone: Option<bool>,
     pub use_proxy: Option<bool>,
