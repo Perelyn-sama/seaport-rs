@@ -53,3 +53,10 @@ pub static CROSS_CHAIN_SEAPORT_ADDRESS: Lazy<Address> = Lazy::new(|| {
         .parse()
         .unwrap()
 });
+
+pub static ZERO_ADDRESS: Lazy<Address> = Lazy::new(|| {
+    "0x000000000000000000000000000000000000dEaD"
+        .parse()
+        .unwrap()
+});
+
