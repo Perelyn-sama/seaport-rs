@@ -1,17 +1,12 @@
 use crate::constants;
-use crate::types::{ConsiderationInputItem, Overrides};
-use crate::types::ProviderOrSigner;
-use crate::types::SeaportConfig;
-use crate::types::CreateOrderInput;
-use std::collections::HashMap;
 use crate::constants::ItemType;
-use crate::types::BasicErc721Item;
-use crate::types::Erc721Item;
-use crate::types::CreateInputItem;
-use crate::types::CurrencyItem;
-use std::time::{SystemTime, UNIX_EPOCH};
+use crate::types::{
+    BasicErc721Item, ConsiderationInputItem, CreateInputItem, CreateOrderInput, CurrencyItem,
+    Erc721Item, Overrides, ProviderOrSigner, SeaportConfig,
+};
 use ethers::types::U256;
-
+use std::collections::HashMap;
+use std::time::{SystemTime, UNIX_EPOCH};
 
 #[derive(Debug)]
 pub struct Seaport {
@@ -61,42 +56,40 @@ impl Default for SeaportConfig {
 
 impl Default for CreateOrderInput {
     fn default() -> Self {
-
         let offerer = String::from("0x3C58dC9864e73aE2Ec9E0B11e00F786352A80F51");
 
-        let basic_erc721_item = BasicErc721Item{
+        let basic_erc721_item = BasicErc721Item {
             item_type: ItemType::ERC721,
             token: String::from("0xf5de760f2e916647fd766B4AD9E85ff943cE3A2b"),
-            identifier: String::from("1672186")
+            identifier: String::from("1672186"),
         };
 
         let erc721_item = Erc721Item::BasicErc721Item(basic_erc721_item);
 
         let offer_input_item = CreateInputItem::Erc721Item(erc721_item);
 
-        let currency_item = CurrencyItem{
+        let currency_item = CurrencyItem {
             token: None,
-            amount: String::from(0.0001),
-            end_amount: None
+            amount: String::from("0.0001"),
+            end_amount: None,
         };
 
         let currency_input_item = CreateInputItem::CurrencyItem(currency_item);
 
-        let consideration_input_item = ConsiderationInputItem{
-            CreateInputItem: currency_input_item,
-            recipient: Some(offerer)
+        let consideration_input_item = ConsiderationInputItem {
+            create_input_item: currency_input_item,
+            recipient: Some(offerer),
         };
 
-        let start = SystemTime::now();
-        let since_the_epoch = start
+        let start_time = SystemTime::now()
             .duration_since(UNIX_EPOCH)
-            .expect("Time went backwards");
-        println!("{:?}", since_the_epoch);
+            .expect("Time went backwards")
+            .as_secs();
 
         Self {
             conduit_key: Some(*constants::OPENSEA_CONDUIT_ADDRESS),
             zone: Some(*constants::ZERO_ADDRESS),
-            start_time: Some(U256::from(since_the_epoch)),
+            start_time: Some(U256::from(start_time)),
             end_time: Some(U256::max_value()),
             offer: vec![offer_input_item],
             consideration: vec![consideration_input_item],
@@ -106,7 +99,7 @@ impl Default for CreateOrderInput {
             restricted_by_zone: None,
             use_proxy: None,
             domain: None,
-            salt: None
+            salt: None,
         }
     }
 }
@@ -150,7 +143,7 @@ mod tests {
         );
 
         // Start the stack
-        let provider = Provider::<Http>::try_from("http://localhost:8545").unwrap();
+        //        let provider = Provider::<Http>::try_from("http://localhost:8545").unwrap();
 
         // Sign transactions with a private key
         let signer = LocalWallet::new(&mut rand::thread_rng());
