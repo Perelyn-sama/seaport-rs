@@ -1883,12 +1883,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "seaport-rs"
+name = "seaport"
 version = "0.1.0"
 dependencies = [
  "ethers",
+ "eyre",
  "once_cell",
- "serde",
  "tokio",
 ]
 
