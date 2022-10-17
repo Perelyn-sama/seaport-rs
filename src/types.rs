@@ -1,3 +1,4 @@
+#![allow(unused_variables)]
 use std::collections::HashMap;
 use std::str::FromStr;
 
@@ -113,14 +114,14 @@ pub struct BasicErc721Item {
 
 #[derive(Debug)]
 pub struct Erc721ItemWithCriteria {
-    item_type: ItemType,
+    pub item_type: ItemType,
     // FIXME This should be an address
-    token: String,
-    identifiers: Vec<String>,
+    pub token: String,
+    pub identifiers: Vec<String>,
     // FIXME This should be a number
-    amount: Option<String>,
+    pub amount: Option<String>,
     // FIXME THIS SHOULD BE A NUMBER
-    end_amount: Option<String>,
+    pub end_amount: Option<String>,
 }
 
 #[derive(Debug)]
@@ -131,21 +132,21 @@ pub enum Erc721Item {
 
 #[derive(Debug)]
 pub struct BasicErc1155Item {
-    item_type: ItemType,
+    pub item_type: ItemType,
     // FIXME SHOULD BE ADDRESS
-    token: String,
-    identifier: String,
-    amount: String,
-    end_amount: Option<String>,
+    pub token: String,
+    pub identifier: String,
+    pub amount: String,
+    pub end_amount: Option<String>,
 }
 
 #[derive(Debug)]
 pub struct Erc1155ItemWithCriteria {
-    item_type: ItemType,
-    token: String,
-    identifiers: Vec<String>,
-    amount: String,
-    end_amount: Option<String>,
+    pub item_type: ItemType,
+    pub token: String,
+    pub identifiers: Vec<String>,
+    pub amount: String,
+    pub end_amount: Option<String>,
 }
 
 #[derive(Debug)]
@@ -176,8 +177,8 @@ pub struct ConsiderationInputItem {
 
 #[derive(Debug)]
 pub struct Fee {
-    recipient: String,
-    basis_points: u32,
+    pub recipient: String,
+    pub basis_points: u32,
 }
 
 #[derive(Debug)]
