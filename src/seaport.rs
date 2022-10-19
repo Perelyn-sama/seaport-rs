@@ -4,7 +4,7 @@ use crate::types::{
     BasicErc721Item, ConsiderationInputItem, CreateInputItem, CreateOrderInput, CurrencyItem,
     Erc721Item, Overrides, ProviderOrSigner, SeaportConfig,
 };
-use ethers::types::U256;
+use ethers::types::{U256};
 use std::collections::HashMap;
 use std::time::{SystemTime, UNIX_EPOCH};
 
@@ -18,20 +18,58 @@ impl Seaport {
     pub fn new(provider_or_signer: ProviderOrSigner, cfg: SeaportConfig) -> Self {
         match cfg.ascending_amount_fulfillment_buffer {
             Some(_x) => {
-                return Self {
+                Self {
                     provider_or_signer,
                     seaport_config: Some(cfg),
-                };
+                }
             }
 
             None => {
-                return Self {
+                Self {
                     provider_or_signer,
                     seaport_config: Some(SeaportConfig::default()),
-                };
+                }
             }
         }
     }
+    // pass in provider or singer to get a signer
+    // wait a min that does not make sense
+    // what about change provider to middleware
+    // use if let to get signer from providerOrSigner enum
+//    pub fn GetSigner() -> LocalWallet{
+//
+//    }
+
+    // make function to create orders
+    // what does it take in - param
+    // what does it output
+    // How to make it work?
+
+    // making it work
+    // I need to
+//    pub fn CreateOrder(
+//            &self,
+//        param: CreateOrderInput,
+//        AccountAddress: Option<Address>,
+//    ) -> OrderParameters {
+//
+////        let offerer = self.provider_or_signer.
+//
+//
+//        OrderParameters {
+//            offerer: AccountAddress.unwrap(),
+//            zone: (),
+//            order_type: (),
+//            start_time: (),
+//            end_time: (),
+//            zone_hash: (),
+//            salt: (),
+//            offer: (),
+//            consideration: (),
+//            total_original_consideration_items: (),
+//            conduit_key: (),
+//        }
+//    }
 }
 
 impl Default for SeaportConfig {
@@ -119,15 +157,14 @@ mod tests {
         );
 
         let cfg = SeaportConfig::default();
-        let output = SeaportConfig::from(cfg);
+        let output = cfg;
 
         assert_eq!(output.ascending_amount_fulfillment_buffer, Some(300));
         assert_eq!(output.ascending_amount_fulfillment_buffer.unwrap(), 300);
-        assert_eq!(
+        assert!(
             output
                 .balance_and_approval_checks_on_order_creation
-                .unwrap(),
-            true
+                .unwrap()
         );
         assert_eq!(output.conduit_key_to_conduit.unwrap(), map);
         // assert_eq!(output.overides.contract_address.unwrap(), *constants::OPENSEA_CONDUIT_ADDRESS);
@@ -155,7 +192,7 @@ mod tests {
 
         let seaport: Seaport = Seaport::new(ProviderOrSigner::Signer(signer), cfg);
 
-        let output = Seaport::from(seaport);
+        let output = seaport;
 
         assert_eq!(output.seaport_config.unwrap(), cfg2);
     }
