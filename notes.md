@@ -27,3 +27,25 @@ I found a pattern like in Opensea-rs and thought "Yeah, I could use that"
 
 line 44: seaport.rs
 Most to the value have Some covering it because I made them Options
+
+## types.rs
+This file contains the types(Structures of data types)
+Why did I use Lazy<Address> over Address? I have no technical reason
+I saw this pattern in gakonst's opensea-rs
+Made everything here pub so I could use them in other files
+
+TODO  I have to make sure each type is ideal at some point
+I used u64 for every field that was a number, I'm not sure if this was a good idea
+FIXME start_amount and end_amount are Strings, I'll have to work on that later
+FIXME recipient should probably be an Address or Lazy<Address>
+
+line 20: types.rs - impl SeaportConfig
+I faced issues setting the conduit key to a constanst, so I'm using a function for it instead - Got the idea from asnared :)
+I might move this to SeaportConfig
+
+line 61
+Using a vec here but would an array be better?
+const offer: [OfferItem; 1];
+
+line 79 - enum ProviderOrSigneer
+I needed a way to set provider or signer to just two types, thus the enum
