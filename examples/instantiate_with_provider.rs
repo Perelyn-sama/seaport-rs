@@ -18,7 +18,7 @@ fn main() -> Result<()> {
 
     let seaport: Seaport = Seaport::new(ProviderOrSigner::Provider(provider), cfg);
 
-    let output = Seaport::from(seaport);
+    let output = seaport;
 
     println!("{:?}", output);
 

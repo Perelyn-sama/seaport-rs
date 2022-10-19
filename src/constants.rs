@@ -59,4 +59,3 @@ pub static ZERO_ADDRESS: Lazy<Address> = Lazy::new(|| {
         .parse()
         .unwrap()
 });
-
