@@ -1,7 +1,7 @@
+use crate::constants::{ItemType, OrderType};
+use ethers::prelude::*;
 use std::collections::HashMap;
 use std::str::FromStr;
-use ethers::prelude::*;
-use crate::constants::{ItemType, OrderType};
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct Overrides {
@@ -27,10 +27,10 @@ impl SeaportConfig {
 #[derive(Debug)]
 pub struct OfferItem {
     pub item_type: ItemType,
-    pub token: Address,
+    pub token: H160,
     pub identifier_or_criteria: String,
-    pub start_amount: String,
-    pub end_amount: String,
+    pub start_amount: U256,
+    pub end_amount: U256,
 }
 
 #[derive(Debug)]
@@ -52,10 +52,10 @@ pub struct Item {
 #[derive(Debug)]
 pub struct OrderParameters {
     pub offerer: Address,
-    pub zone: String,
+    pub zone: Address,
     pub order_type: OrderType,
-    pub start_time: u64,
-    pub end_time: u64,
+    pub start_time: U256,
+    pub end_time: U256,
     pub zone_hash: String,
     pub salt: String,
     pub offer: Vec<OfferItem>,
@@ -79,7 +79,7 @@ pub struct Order {
 #[derive(Debug)]
 pub enum ProviderOrSigner {
     Provider(Provider<Http>),
-    Signer(LocalWallet),
+    Signer(SignerMiddleware<Provider<Http>, LocalWallet>),
 }
 
 #[derive(Debug)]
