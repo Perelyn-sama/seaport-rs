@@ -48,11 +48,8 @@ pub static OPENSEA_CONDUIT_ADDRESS: Lazy<Address> = Lazy::new(|| {
         .unwrap()
 });
 
-pub static CROSS_CHAIN_SEAPORT_ADDRESS: Lazy<Address> = Lazy::new(|| {
-    "0x00000000006c3852cbef3e08e8df289169ede581"
-        .parse()
-        .unwrap()
-});
+// pub const CROSS_CHAIN_SEAPORT_ADDRESS : Address = Address::from_str("0x00000000006c3852cbef3e08e8df289169ede581").unwrap();
+pub const CROSS_CHAIN_SEAPORT_ADDRESS: &str = "0x00000000006c3852cbef3e08e8df289169ede581";
 
 pub static ZERO_ADDRESS: Lazy<Address> = Lazy::new(|| {
     "0x000000000000000000000000000000000000dEaD"
