@@ -1,3 +1,5 @@
+use crate::constants::CROSS_CHAIN_SEAPORT_ADDRESS;
+use ethers::types::Address;
 use ethers::{
     abi::Detokenize,
     prelude::{builders::ContractCall, *},
@@ -10,8 +12,6 @@ use seaport::types::{ProviderOrSigner, SeaportConfig};
 use std::collections::HashMap;
 use std::str::FromStr;
 use std::sync::Arc;
-use ethers::types::Address;
-use crate::constants::CROSS_CHAIN_SEAPORT_ADDRESS;
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -37,11 +37,8 @@ async fn main() -> Result<()> {
         Address::from_str(CROSS_CHAIN_SEAPORT_ADDRESS).unwrap(),
         cfg,
     );
-    dbg!(seaport);
-    // let offerer = Address::from_str("0x00000000006c3852cbEf3e08E8dF289169EdE581").unwrap();
-    // let call = seaport
-    //     .counter(offerer)
-    //     .await?;
-    // dbg!(call);
+    let offerer = Address::from_str("0x00000000006c3852cbEf3e08E8dF289169EdE581").unwrap();
+    let call = seaport.counter(offerer).await?;
+    dbg!(call);
     Ok(())
 }
