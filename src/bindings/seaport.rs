@@ -1,4 +1,4 @@
-pub use self::seaport::*;
+pub use seaport::*;
 #[allow(clippy::too_many_arguments, non_camel_case_types)]
 pub mod seaport {
     #![allow(clippy::enum_variant_names)]
@@ -2387,14 +2387,14 @@ pub mod seaport {
         ethers :: contract :: EthAbiType,
         ethers :: contract :: EthAbiCodec,
     )]
-    pub struct ConsiderationItem(
-        u8,
-        ethers::core::types::Address,
-        ethers::core::types::U256,
-        ethers::core::types::U256,
-        ethers::core::types::U256,
-        ethers::core::types::Address,
-    );
+    pub struct ConsiderationItem {
+        pub item_type: u8,
+        pub token: ethers::core::types::Address,
+        pub identifier_or_criteria: ethers::core::types::U256,
+        pub start_amount: ethers::core::types::U256,
+        pub end_amount: ethers::core::types::U256,
+        pub recipient: ethers::core::types::Address,
+    }
     #[doc = "`CriteriaResolver(uint256,uint8,uint256,uint256,bytes32[])`"]
     #[derive(
         Clone,
