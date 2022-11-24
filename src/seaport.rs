@@ -1,17 +1,17 @@
+use crate::bindings::seaport::seaport::seaport;
 use crate::constants;
 use crate::constants::ItemType;
 use crate::types::{
     BasicErc721Item, ConsiderationInputItem, ConsiderationItem, CreateInputItem, CreateOrderInput,
-    CurrencyItem, Erc721Item, OfferItem, OrderParameters, Overrides, ProviderOrSigner,
+    CurrencyItem, Erc721Item, OfferItem, OrderParameters, Overrides,
     SeaportConfig,
 };
 use ethers::prelude::{builders::ContractCall, *};
+use ethers::types::Address;
 use std::collections::HashMap;
 use std::sync::Arc;
 use std::time::{SystemTime, UNIX_EPOCH};
-use ethers::types::Address;
-use crate::bindings::seaport::seaport::seaport;
-
+use std::str::FromStr;
 
 #[derive(Debug)]
 pub struct Seaport<M> {
@@ -52,46 +52,71 @@ impl<M: Middleware> Seaport<M> {
 
     // making it work
     // I need to
-    //    pub fn CreateOrder(
-    //        &self,
-    //        param: CreateOrderInput,
-    //        AccountAddress: Option<Address>,
-    //    ) -> OrderParameters {
-    //        //  let offerer = self.provider_or_signer.
-    //
-    //        let offer_item = OfferItem {
-    //            item_type: ItemType::ERC721,
-    //            token: token_address,
-    //            identifier_or_criteria: String::from("1672186"),
-    //            start_amount: U256::from(start_time),
-    //            end_amount: U256::max_value(),
-    //        };
-    //
-    //        let consideration_input = ConsiderationItem {
-    //            item_type: ItemType::ERC721,
-    //            token: "address".to_string(),
-    //            identifier_or_criteria: String::from("0"),
-    //            start_amount: String::from("10000000000000"),
-    //            end_amount: String::from("10000000000000"),
-    //            recipient: String::from("0x3C58dC9864e73aE2Ec9E0B11e00F786352A80F51"),
-    //        };
-    //
-    //        //I can extract data for what I need here form the the othe place
-    //        //i do not need to make it here agian
-    //        OrderParameters {
-    //            offerer: AccountAddress.unwrap(),
-    //            zone: param.zone.unwrap(),
-    //            order_type: constants::OrderType::FullOpen,
-    //            start_time: param.start_time.unwrap(),
-    //            end_time: param.end_time.unwrap(),
-    //            zone_hash: (),
-    //            salt: param.salt.unwrap(),
-    //            offer: vec![offer_item],
-    //            consideration: vec![consideration_input],
-    //            total_original_consideration_items: (),
-    //            conduit_key: (),
-    //        }
-    //    }
+    pub fn create_order(
+        &self,
+        param: CreateOrderInput,
+        account_address: Option<Address>,
+    ) -> OrderParameters {
+
+        let start_time = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .expect("Time went backwards")
+            .as_secs();
+
+        let token_address = "0xf5de760f2e916647fd766B4AD9E85ff943cE3A2b"
+            .parse::<Address>()
+            .unwrap();
+
+        let offer_item = OfferItem {
+            item_type: ItemType::ERC721,
+            token: token_address,
+            identifier_or_criteria: String::from("1672186"),
+            start_amount: U256::from(start_time),
+            end_amount: U256::max_value(),
+        };
+
+        let consideration_input = ConsiderationItem {
+            item_type: ItemType::ERC721,
+            token: "address".to_string(),
+            identifier_or_criteria: String::from("0"),
+            start_amount: String::from("10000000000000"),
+            end_amount: String::from("10000000000000"),
+            recipient: String::from("0x3C58dC9864e73aE2Ec9E0B11e00F786352A80F51"),
+        };
+
+        // let counter = &self.counter();
+        // FIXME MORE TO CREATEORDERINPUT default function
+        let _counter = 0.to_string();
+
+        let consideration_vec = vec![consideration_input];
+        let consideration_len = consideration_vec.len();
+
+            // if let x = y {
+            //     foo();
+            // } else {
+            //     bar();
+            // }
+
+        //I can extract data for what I need here form the the othe place
+        //i do not need to make it here agian
+        OrderParameters {
+            offerer: account_address.unwrap(),
+            zone: param.zone.unwrap(),
+            order_type: constants::OrderType::FullOpen,
+            start_time: param.start_time.unwrap(),
+            end_time: param.end_time.unwrap(),
+            // FIXME REMOVE HARD CODED VALUE
+            // FIXME USE format!("{:?}", "0".as_bytes());
+            zone_hash: "48".to_string(),
+            // FIXME REMOVE HARDCODE VERSION
+            // salt: param.salt.unwrap(),
+            salt: "".to_string(),
+            offer: vec![offer_item],
+            consideration: consideration_vec,
+            total_original_consideration_items: consideration_len as u64,
+            conduit_key: param.conduit_key.unwrap(),
+        }
+    }
 }
 impl<M> std::ops::Deref for Seaport<M> {
     type Target = seaport<M>;
@@ -146,35 +171,13 @@ impl Default for CreateOrderInput {
             create_input_item: currency_input_item,
             recipient: Some(offerer),
         };
-
         let start_time = SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .expect("Time went backwards")
             .as_secs();
-
-        let token_address = "0xf5de760f2e916647fd766B4AD9E85ff943cE3A2b"
-            .parse::<Address>()
-            .unwrap();
-
-        let offer_item = OfferItem {
-            item_type: ItemType::ERC721,
-            token: token_address,
-            identifier_or_criteria: String::from("1672186"),
-            start_amount: U256::from(start_time),
-            end_amount: U256::max_value(),
-        };
-
-        let consideration_input = ConsiderationItem {
-            item_type: ItemType::ERC721,
-            token: "address".to_string(),
-            identifier_or_criteria: String::from("0"),
-            start_amount: String::from("10000000000000"),
-            end_amount: String::from("10000000000000"),
-            recipient: String::from("0x3C58dC9864e73aE2Ec9E0B11e00F786352A80F51"),
-        };
-
         Self {
-            conduit_key: Some(*constants::OPENSEA_CONDUIT_ADDRESS),
+            // conduit_key: (*constants::OPENSEA_CONDUIT_KEY),
+            conduit_key: Some(H256::from_str("0x0000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000").unwrap()),
             zone: Some(*constants::ZERO_ADDRESS),
             start_time: Some(U256::from(start_time)),
             end_time: Some(U256::max_value()),
@@ -194,9 +197,9 @@ impl Default for CreateOrderInput {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::constants::CROSS_CHAIN_SEAPORT_ADDRESS;
     use crate::types::SeaportConfig;
     use ethers::prelude::*;
-    use crate::constants::CROSS_CHAIN_SEAPORT_ADDRESS;
     use std::str::FromStr;
 
     #[tokio::test]
@@ -220,29 +223,29 @@ mod tests {
         // assert_eq!(output.overides.default_conduitkey.unwrap(), SeaportConfig::get_opensea_conduit_key());
     }
 
-        #[tokio::test]
-        async fn test_seaport_new() {
-            let mut map = HashMap::new();
-            map.insert(
-                SeaportConfig::get_opensea_conduit_key(),
-                *constants::OPENSEA_CONDUIT_ADDRESS,
-            );
+    #[tokio::test]
+    async fn test_seaport_new() {
+        let mut map = HashMap::new();
+        map.insert(
+            SeaportConfig::get_opensea_conduit_key(),
+            *constants::OPENSEA_CONDUIT_ADDRESS,
+        );
 
-            let provider = Provider::<Http>::try_from("http://localhost:8545").unwrap();
-            let signer = LocalWallet::new(&mut rand::thread_rng());
-            let signer_miidleware = SignerMiddleware::new(provider, signer);
+        let provider = Provider::<Http>::try_from("http://localhost:8545").unwrap();
+        let signer = LocalWallet::new(&mut rand::thread_rng());
+        let signer_miidleware = SignerMiddleware::new(provider, signer);
 
-            let client = Arc::new(signer_miidleware);
+        let client = Arc::new(signer_miidleware);
 
-            let cfg = SeaportConfig::default();
-            let cfg2 = SeaportConfig::default();
+        let cfg = SeaportConfig::default();
+        let cfg2 = SeaportConfig::default();
 
-            let seaport = Seaport::new(
-                client,
-                Address::from_str(CROSS_CHAIN_SEAPORT_ADDRESS).unwrap(),
-                cfg,
-            );
+        let seaport = Seaport::new(
+            client,
+            Address::from_str(CROSS_CHAIN_SEAPORT_ADDRESS).unwrap(),
+            cfg,
+        );
 
-            assert_eq!(seaport.seaport_config.unwrap(), cfg2);
-        }
+        assert_eq!(seaport.seaport_config.unwrap(), cfg2);
+    }
 }
