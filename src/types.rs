@@ -161,7 +161,7 @@ pub struct Fee {
 
 #[derive(Debug)]
 pub struct CreateOrderInput {
-    pub conduit_key: Option<Address>,
+    pub conduit_key: Option<H256>,
     pub zone: Option<Address>,
     pub start_time: Option<U256>,
     pub end_time: Option<U256>,
