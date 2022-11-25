@@ -77,12 +77,6 @@ pub struct Order {
 }
 
 #[derive(Debug)]
-pub enum ProviderOrSigner {
-    Provider(Provider<Http>),
-    Signer(SignerMiddleware<Provider<Http>, LocalWallet>),
-}
-
-#[derive(Debug)]
 pub struct BasicErc721Item {
     pub item_type: ItemType,
     // FIXME This should be an address
