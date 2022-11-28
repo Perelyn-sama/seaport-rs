@@ -117,7 +117,14 @@ impl<M: Middleware> Seaport<M> {
             conduit_key: param.conduit_key.unwrap(),
         }
     }
+
+    pub fn get_counter(&self, offerer: Address) -> ContractCall<M, U256> {
+        let seaport = self.contract();
+        let counter = seaport.get_counter(offerer);
+        counter
+    }
 }
+
 impl<M> std::ops::Deref for Seaport<M> {
     type Target = seaport<M>;
 
