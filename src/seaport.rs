@@ -113,9 +113,36 @@ impl<M: Middleware> Seaport<M> {
             salt: "".to_string(),
             offer: vec![offer_item],
             consideration: consideration_vec,
-            total_original_consideration_items: consideration_len as u64,
-            conduit_key: param.conduit_key.unwrap(),
+            total_original_consideration_items: U256::from(consideration_len as u64),
+            // conduit_key: param.conduit_key.unwrap(),
+            conduit_key: <[u8; 32]>::from(param.conduit_key.unwrap()),
         }
+    }
+
+    pub fn cancel(
+        &self,
+        orders: Vec<OrderComponents>,
+        _account_address: Option<String>,
+        _domain: Option<String>,
+    ) -> ContractCall<M, bool> {
+        let seaport = self.contract();
+        seaport.cancel(orders)
+    }
+    pub fn validate(
+        &self,
+        orders: Vec<Order>,
+        _account_address: Option<String>,
+        _domain: Option<String>,
+    ) -> ContractCall<M, bool> {
+        let seaport = self.contract();
+        seaport.validate(orders)
+    }
+    pub fn get_order_status(
+        &self,
+        order_hash: [u8; 32],
+    ) -> ContractCall<M, (bool, bool, U256, U256)> {
+        let seaport = self.contract();
+        seaport.get_order_status(order_hash)
     }
 
     pub fn get_counter(&self, offerer: Address) -> ContractCall<M, U256> {
