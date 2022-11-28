@@ -1,14 +1,10 @@
 use crate::constants::CROSS_CHAIN_SEAPORT_ADDRESS;
+use ethers::prelude::*;
 use ethers::types::Address;
-use ethers::{
-    abi::Detokenize,
-    prelude::{builders::ContractCall, *},
-};
-use eyre::ContextCompat;
 use eyre::Result;
 use seaport::constants;
 use seaport::seaport::Seaport;
-use seaport::types::{ProviderOrSigner, SeaportConfig};
+use seaport::types::SeaportConfig;
 use std::collections::HashMap;
 use std::str::FromStr;
 use std::sync::Arc;
@@ -26,11 +22,11 @@ async fn main() -> Result<()> {
             .unwrap();
 
     let signer = LocalWallet::new(&mut rand::thread_rng());
-    let signer_miidleware = SignerMiddleware::new(provider, signer);
+    let signer_middleware = SignerMiddleware::new(provider, signer);
 
     let cfg = SeaportConfig::default();
 
-    let client = Arc::new(signer_miidleware);
+    let client = Arc::new(signer_middleware);
 
     let seaport = Seaport::new(
         client,
@@ -38,7 +34,7 @@ async fn main() -> Result<()> {
         cfg,
     );
     let offerer = Address::from_str("0x00000000006c3852cbEf3e08E8dF289169EdE581").unwrap();
-    let call = seaport.counter(offerer).await?;
+    let call = seaport.get_counter(offerer).await?;
     dbg!(call);
     Ok(())
 }
