@@ -9,7 +9,7 @@ pub struct Overrides {
     pub default_conduitkey: H256,
 }
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Default)]
 pub struct SeaportConfig {
     pub ascending_amount_fulfillment_buffer: Option<u64>,
     pub balance_and_approval_checks_on_order_creation: Option<bool>,
