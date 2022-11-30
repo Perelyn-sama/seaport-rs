@@ -46,7 +46,6 @@ impl<M: Middleware> Seaport<M> {
             },
         }
     }
-
     pub fn create_order(
         &self,
         param: CreateOrderInput,
@@ -124,6 +123,7 @@ impl<M: Middleware> Seaport<M> {
         wallet.sign_message(order_components)
     }
 
+    // View/Read functions
     pub fn cancel(
         &self,
         orders: Vec<OrderComponents>,
@@ -149,50 +149,29 @@ impl<M: Middleware> Seaport<M> {
         let seaport = self.contract();
         seaport.get_order_status(order_hash)
     }
-
     pub fn get_counter(&self, offerer: Address) -> ContractCall<M, U256> {
         let seaport = self.contract();
         let counter = seaport.get_counter(offerer);
         counter
     }
+
+
 }
 
 impl<M> std::ops::Deref for Seaport<M> {
     type Target = seaport<M>;
-
     fn deref(&self) -> &Self::Target {
         self.contract()
     }
 }
 
 #[cfg(test)]
-mod tests {
+mod tests  {
     use super::*;
     use crate::constants::CROSS_CHAIN_SEAPORT_ADDRESS;
     use crate::types::SeaportConfig;
     use ethers::prelude::*;
     use std::str::FromStr;
-
-    #[tokio::test]
-    async fn test_seaport_config_default() {
-        let mut map = HashMap::new();
-        map.insert(
-            SeaportConfig::get_opensea_conduit_key(),
-            *constants::OPENSEA_CONDUIT_ADDRESS,
-        );
-
-        let cfg = SeaportConfig::default();
-        let output = cfg;
-
-        assert_eq!(output.ascending_amount_fulfillment_buffer, Some(300));
-        assert_eq!(output.ascending_amount_fulfillment_buffer.unwrap(), 300);
-        assert!(output
-            .balance_and_approval_checks_on_order_creation
-            .unwrap());
-        assert_eq!(output.conduit_key_to_conduit.unwrap(), map);
-        // assert_eq!(output.overides.contract_address.unwrap(), *constants::OPENSEA_CONDUIT_ADDRESS);
-        // assert_eq!(output.overides.default_conduitkey.unwrap(), SeaportConfig::get_opensea_conduit_key());
-    }
 
     #[tokio::test]
     async fn test_seaport_new() {
