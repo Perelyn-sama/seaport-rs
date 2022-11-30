@@ -107,6 +107,22 @@ impl<M: Middleware> Seaport<M> {
             conduit_key: <[u8; 32]>::from(param.conduit_key.unwrap()),
         }
     }
+    pub fn sign_order(wallet: LocalWallet, order_parameters: OrderParameters, counter: U256, account_address: Option<Address>) -> Signature {
+        let order_components = OrderComponents {
+            offerer: order_parameters.offerer,
+            zone: order_parameters.zone,
+            offer: order_parameters.offer,
+            consideration: order_parameters.consideration,
+            order_type: order_parameters.order_type,
+            start_time: order_parameters.start_time,
+            end_time: order_parameters.end_time,
+            zone_hash: order_parameters.zone_hash,
+            salt: order_parameters.salt,
+            conduit_key: order_parameters.conduit_key,
+            counter,
+        };
+        wallet.sign_message(order_components)
+    }
 
     pub fn cancel(
         &self,
