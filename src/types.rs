@@ -153,7 +153,7 @@ pub struct Fee {
     pub basis_points: u32,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct CreateOrderInput {
     pub conduit_key: Option<H256>,
     pub zone: Option<Address>,
