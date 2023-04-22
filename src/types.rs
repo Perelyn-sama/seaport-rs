@@ -3,13 +3,13 @@ use ethers::prelude::*;
 use std::collections::HashMap;
 use std::str::FromStr;
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Overrides {
     pub contract_address: H160,
     pub default_conduitkey: H256,
 }
 
-#[derive(Debug, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SeaportConfig {
     pub ascending_amount_fulfillment_buffer: Option<u64>,
     pub balance_and_approval_checks_on_order_creation: Option<bool>,
@@ -21,6 +21,17 @@ impl SeaportConfig {
     pub fn get_opensea_conduit_key() -> H256 {
         H256::from_str("0x0000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000")
             .unwrap()
+    }
+}
+
+impl Default for SeaportConfig {
+    fn default() -> Self {
+        Self {
+            ascending_amount_fulfillment_buffer: Some(300),
+            balance_and_approval_checks_on_order_creation: Some(true),
+            conduit_key_to_conduit: None,
+            overides: None,
+        }
     }
 }
 
