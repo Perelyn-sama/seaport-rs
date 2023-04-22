@@ -1,5 +1,7 @@
+#[allow(unused_imports)]
 use ethers::types::{Address, H256};
 use once_cell::sync::Lazy;
+#[allow(unused_imports)]
 use std::str::FromStr;
 
 pub const SEAPORT_CONTRACT_NAME: &str = "seaport";

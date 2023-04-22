@@ -4,6 +4,7 @@ use crate::bindings::seaport::{
 };
 use crate::constants;
 use crate::constants::ItemType;
+#[allow(unused_imports)]
 use crate::types::{
     BasicErc721Item, ConsiderationInputItem, CreateInputItem, CreateOrderInput, CurrencyItem,
     Erc721Item, Overrides, SeaportConfig,
@@ -94,7 +95,6 @@ impl<M: Middleware> Seaport<M> {
         SeaportBuilder {
             contract,
             seaport_config: Some(SeaportConfig::default()),
-            },
         }
     }
     pub fn create_order(
@@ -157,24 +157,23 @@ impl<M: Middleware> Seaport<M> {
             conduit_key: <[u8; 32]>::from(param.conduit_key.unwrap()),
         }
     }
-    pub fn sign_order(wallet: LocalWallet, order_parameters: OrderParameters, counter: U256, account_address: Option<Address>) -> Signature {
-        let order_components = OrderComponents {
-            offerer: order_parameters.offerer,
-            zone: order_parameters.zone,
-            offer: order_parameters.offer,
-            consideration: order_parameters.consideration,
-            order_type: order_parameters.order_type,
-            start_time: order_parameters.start_time,
-            end_time: order_parameters.end_time,
-            zone_hash: order_parameters.zone_hash,
-            salt: order_parameters.salt,
-            conduit_key: order_parameters.conduit_key,
-            counter,
-        };
-        wallet.sign_message(order_components)
-    }
+    // pub fn sign_order(wallet: LocalWallet, order_parameters: OrderParameters, counter: U256, account_address: Option<Address>) -> Signature {
+    //     let order_components = OrderComponents {
+    //         offerer: order_parameters.offerer,
+    //         zone: order_parameters.zone,
+    //         offer: order_parameters.offer,
+    //         consideration: order_parameters.consideration,
+    //         order_type: order_parameters.order_type,
+    //         start_time: order_parameters.start_time,
+    //         end_time: order_parameters.end_time,
+    //         zone_hash: order_parameters.zone_hash,
+    //         salt: order_parameters.salt,
+    //         conduit_key: order_parameters.conduit_key,
+    //         counter,
+    //     };
+    //     wallet.sign_message(order_components)
+    // }
 
-    // View/Read functions
     pub fn cancel(
         &self,
         orders: Vec<OrderComponents>,
@@ -205,8 +204,6 @@ impl<M: Middleware> Seaport<M> {
         let counter = seaport.get_counter(offerer);
         counter
     }
-
-
 }
 
 impl<M> std::ops::Deref for Seaport<M> {
@@ -217,11 +214,11 @@ impl<M> std::ops::Deref for Seaport<M> {
 }
 
 #[cfg(test)]
-mod tests  {
+mod tests {
     use super::*;
     use crate::constants::CROSS_CHAIN_SEAPORT_ADDRESS;
     use crate::types::SeaportConfig;
-    use ethers::prelude::*;
+    use std::collections::HashMap;
     use std::str::FromStr;
 
     #[tokio::test]
@@ -238,13 +235,12 @@ mod tests  {
 
         let client = Arc::new(signer_miidleware);
 
-        let cfg = SeaportConfig::default();
+        // let cfg = SeaportConfig::default();
         let cfg2 = SeaportConfig::default();
 
         let seaport = Seaport::new(
             client,
             Address::from_str(CROSS_CHAIN_SEAPORT_ADDRESS).unwrap(),
-            cfg,
         );
 
         assert_eq!(seaport.seaport_config.unwrap(), cfg2);
