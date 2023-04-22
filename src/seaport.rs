@@ -36,6 +36,57 @@ impl<M> Seaport<M> {
     }
 }
 
+impl<M> SeaportBuilder<M> {
+    /// set ascending_amount_fulfillment_buffer
+    pub fn ascending_amount_fulfillment_buffer(
+        &mut self,
+        ascending_amount_fulfillment_buffer: u64,
+    ) -> &mut Self {
+        self.seaport_config
+            .as_mut()
+            .unwrap()
+            .ascending_amount_fulfillment_buffer = Some(ascending_amount_fulfillment_buffer);
+        self
+    }
+
+    /// set balance_and_approval_checks_on_order_creation
+    pub fn balance_and_approval_checks_on_order_creation(
+        &mut self,
+        balance_and_approval_checks_on_order_creation: bool,
+    ) -> &mut Self {
+        self.seaport_config
+            .as_mut()
+            .unwrap()
+            .balance_and_approval_checks_on_order_creation =
+            Some(balance_and_approval_checks_on_order_creation);
+        self
+    }
+
+    /// set conduit_key_to_conduit
+    pub fn conduit_key_to_conduit(
+        &mut self,
+        conduit_key_to_conduit: HashMap<H256, H160>,
+    ) -> &mut Self {
+        self.seaport_config.as_mut().unwrap().conduit_key_to_conduit = Some(conduit_key_to_conduit);
+        self
+    }
+
+    /// set overides
+    pub fn overides(&mut self, overides: Overrides) -> &mut Self {
+        self.seaport_config.as_mut().unwrap().overides = Some(overides);
+        self
+    }
+
+    pub fn build(&mut self) -> Seaport<M> {
+        Seaport {
+            contract: self.contract.clone(),
+            seaport_config: self.seaport_config.clone(),
+        }
+    }
+}
+
+impl<M: Middleware> Seaport<M> {}
+
 impl<M: Middleware> Seaport<M> {
     /// Creates a new instance from using the provided address.
     pub fn new(client: Arc<M>, address: Address, cfg: SeaportConfig) -> Self {
