@@ -89,17 +89,11 @@ impl<M: Middleware> Seaport<M> {}
 
 impl<M: Middleware> Seaport<M> {
     /// Creates a new instance from using the provided address.
-    pub fn new(client: Arc<M>, address: Address, cfg: SeaportConfig) -> Self {
+    pub fn new(client: Arc<M>, address: Address) -> SeaportBuilder<M> {
         let contract = seaport::new(address, client);
-        match cfg.ascending_amount_fulfillment_buffer {
-            Some(_x) => Self {
-                contract,
-                seaport_config: Some(cfg),
-            },
-
-            None => Self {
-                contract,
-                seaport_config: Some(SeaportConfig::default()),
+        SeaportBuilder {
+            contract,
+            seaport_config: Some(SeaportConfig::default()),
             },
         }
     }
