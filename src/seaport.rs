@@ -23,6 +23,12 @@ pub struct Seaport<M> {
     pub seaport_config: Option<SeaportConfig>,
 }
 
+#[derive(Debug)]
+pub struct SeaportBuilder<M> {
+    pub contract: seaport<M>,
+    pub seaport_config: Option<SeaportConfig>,
+}
+
 impl<M> Seaport<M> {
     /// Returns a reference to the seaport contract.
     pub fn contract(&self) -> &seaport<M> {
